@@ -1,46 +1,37 @@
 import {useState, useEffect} from "react";
 
-/* useEffect
-첫 번째 인자는 딱 한 번만 실행하고 싶은 코드
-두 번째 인자로 빈 배열을 사용할 경우 useState 한 번만 실행
-*/
+function Hello(){  
+  useEffect(() => {
+    // button을 click할 때마다 console에 나타난다
+    // 조건문이 생성(create)과 삭제(destroy)를 반복하기 때문
+    // return에 함수로 destroy 시 작동을
+    console.log('created');
+    // cleanup func
+    return () => console.log('destroyed');
+  },[]);
+
+  // 긴 버전
+
+  // function byeFn() {
+  //   console.log("bye :(");
+  // }
+  // function hiFn() {
+  //   console.log("hi :)");
+  //   return byeFn;
+  // }
+  // useEffect(hiFn, []);
+
+  return <h1>Hello</h1>
+}  
 
 function App() {
-  const [counter,setCounter] = useState(0);
-  const [keyword, setKeyword] = useState("");
+  const [showing, setShowing] = useState(false);
+  const onClick = () => setShowing((prev) => !prev);
 
-  const onClick = () => setCounter((prev) => prev + 1);
-  console.log('I run all the time');
-
-  const onChange = (event) => {
-    // console.log(event);
-    setKeyword(event.target.value);
-  };
-
-  // 함수를 따로 선언하는 경우
-  // const iRunOnlyOnce = () => {
-  //   console.log('I run only once');
-  // };
-  // useEffect(iRunOnlyOnce, []);
-
-  // 함수를 따로 선언하지 않는 경우
-  useEffect(() => {
-    console.log('CALL THE API...');
-  }, []);
-
-  // input value(= keyword)가 change 했을 때만
-  // count 버튼을 눌렀을 때는 실행되지 않도록
-  useEffect(() => {
-    if (keyword !== "" && keyword.length > 5){
-      console.log("SEARCH FOR", keyword);
-    }
-  }, [keyword]);
-  
   return (
     <div>
-      <input value={keyword} onChange={onChange} type="text" placeholder="Search here..."/>
-      <h1>{counter}</h1>
-      <button onClick={onClick}>Click me</button>
+      {showing? <Hello /> : null}
+      <button onClick={onClick}>{showing? "Hide" : "Show"}</button>
     </div>
   );
 }
